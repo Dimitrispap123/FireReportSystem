@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - View Incidents</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="style2.css" />
+</head>
+<body>
+    
+    <div class="header" style="padding-right:100px;">
+       <button id="backbut" class="red-button" onclick="back_to_page()">Back</button>
+        <h3 style="padding-right:970px;">All Incidents</h3>
+        
+    
+   </div>
+    <div class="container">
+   
+    <table id="incidentsTable" border="1">
+        <thead>
+            <tr>
+                <th>Incident ID</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Municipality</th>
+                <th>Prefecture</th>
+                <th>Danger</th>
+                 
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    </div>
+    <script>
+        function back_to_page() {
+                window.location.href = "volunteerpage.html";
+        }
+
+ $(document).ready(function() {
+    const key = localStorage.key(0);
+    const userData = localStorage.getItem(key);
+    const userObj = JSON.parse(userData);
+    const volunteerUsername = userObj.username; 
+
+    $.get("http://localhost:8080/359project/GetIncidentForVolunteer", { volunteer_username: volunteerUsername }, function(data) {
+        if (Array.isArray(data)) { 
+            data.forEach(function(incident) {
+                if(incident.status==="finished"){
+                    $("#incidentsTable tbody").append(`
+                    <tr data-incident-id="${incident.incident_id}">
+                        <td>${incident.incident_id}</td>
+                        <td contenteditable="true">${incident.incident_type}</td>
+                        <td contenteditable="true">${incident.description}</td>
+                        <td contenteditable="true">${incident.status}</td>
+                        <td contenteditable="true">${incident.start_datetime}</td>
+                        <td contenteditable="true">${incident.end_datetime}</td>
+                        <td contenteditable="true">${incident.municipality}</td>
+                        <td contenteditable="true">${incident.prefecture}</td>
+                        <td contenteditable="true">${incident.danger}</td>
+                    </tr>
+                `);
+                }
+            });
+        } else {
+            alert("No incidents found for this volunteer.");
+        }
+    }).fail(function() {
+        alert("Error fetching incident data.");
+    });
+});
+
+
+
+    </script>
+</body>
+</html>
+
+                

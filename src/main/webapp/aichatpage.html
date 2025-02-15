@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .chat-container {
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .chat-box {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .chat-message {
+            margin: 10px 0;
+        }
+        .user-message {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .ai-message {
+            font-weight: normal;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        #sendButton {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #sendButton:hover {
+            background-color: #0056b3;
+        }
+         .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+        .red-button {
+            background-color: #dc3545; 
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-top:10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .red-button:hover {
+            background-color: #a71d2a; 
+            transform: scale(1.05); 
+        }
+    </style>
+</head>
+<body>
+    <div class="header" style="padding-right:100px;">
+        <button type="button" id="backbut" class="red-button" onclick="back_to_page()"  >Back</button>
+        <h3 style="padding-right:900px;">Γρήγορες Ερωτήσεις</h3>
+
+        </div>
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox"></div>
+        <input type="text" id="userInput" placeholder="Ask a question..." />
+        <button id="sendButton">Send</button>
+    </div>
+
+    <script>
+        const key = localStorage.key(0);
+        const userData = localStorage.getItem(key);
+        const userObj = JSON.parse(userData);
+        function back_to_page() {
+           
+             if (key === "volunteer") {
+                window.location.href = "volunteerpage.html";
+            } else if(key === "user") {
+                window.location.href = "userpage.html";
+            }
+        }
+        $(document).ready(function() {
+            $('#sendButton').click(function() {
+                const userInput = $('#userInput').val();
+                if (userInput) {
+                    appendMessage('user', userInput);
+                    $('#userInput').val(''); 
+
+                $.ajax({
+                    url: 'http://localhost:8080/359project/Chat',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ "message": userInput }),
+                    success: function(response) {
+                        appendMessage('ai', response.answer);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error status:', status);
+                        console.error('Error response:', xhr.responseText);
+                        console.error('Error message:', error);
+                        appendMessage('ai', 'Sorry, something went wrong. Please try again.');
+                    }
+                });
+                }
+            });
+
+           
+            function appendMessage(sender, message) {
+                const messageClass = sender === 'user' ? 'user-message' : 'ai-message';
+                $('#chatBox').append(`
+                    <div class="chat-message ${messageClass}">
+                        ${message}
+                    </div>
+                `);
+                $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages to Admin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Stylemessages.css" />
+   
+</head>
+<body>
+
+    <div class="container">
+        <h1>Messages</h1>
+
+        <div class="chat-container" id="chatContainer">
+            
+        </div>
+
+        <div id="messageForm">
+            <textarea id="messageContent" rows="4" placeholder="Write your message here..." required></textarea>
+            <button type="button" id="backbut" class="red-button" onclick="back_to_page()">Back</button>
+            <button type="button" class="green-button" id="sendMessageBtn">Send Message</button>
+        </div>
+
+      
+    </div>
+
+    <script>
+        const key = localStorage.key(0);
+        const userData = localStorage.getItem(key);
+        const userObj = JSON.parse(userData);
+        function back_to_page() {
+           
+            if (userObj.username==="admin") {
+                window.location.href = "adminpage.html";
+            } else if (key === "volunteer") {
+                window.location.href = "volunteerpage.html";
+            } else if(key === "user") {
+                window.location.href = "userpage.html";
+            }
+        }
+     $(document).ready(function() {
+        
+        if(key==="user"){
+            $.get("http://localhost:8080/359project/MessagesServlet", function(data) {
+               
+                const chatContainer = $('#chatContainer');
+                chatContainer.empty();  
+                console.log(data);
+                if (data && data.length > 0) {
+                    
+                    data.forEach(function(message) {
+                        const messageHtml = `
+                            <div class="message">
+                                <div class="sender">${message.sender} (To: ${message.recipient})</div>
+                                <div class="timestamp">${new Date(message.date_time).toLocaleString()}</div>
+                                <div class="message-content">${message.message}</div>
+                            </div>
+                        `;
+                        chatContainer.append(messageHtml);
+                    });
+                } else {
+                    chatContainer.append("<p>No messages to display.</p>");
+                }
+            }).fail(function() {
+                alert("Error fetching messages.");
+            });
+        }
+        if(key==="volunteer"){
+              $.get("http://localhost:8080/359project/MessagesVolunteer", function(data) {
+               
+                const chatContainer = $('#chatContainer');
+                chatContainer.empty();
+                console.log(data);
+                if (data && data.length > 0) {
+                    
+                    data.forEach(function(message) {
+                        const messageHtml = `
+                            <div class="message">
+                                <div class="sender">${message.sender} (To: ${message.recipient})</div>
+                                <div class="timestamp">${new Date(message.date_time).toLocaleString()}</div>
+                                <div class="message-content">${message.message}</div>
+                            </div>
+                        `;
+                        chatContainer.append(messageHtml);
+                    });
+                } else {
+                    chatContainer.append("<p>No messages to display.</p>");
+                }
+            }).fail(function() {
+                alert("Error fetching messages.");
+            });
+        }
+
+        if(userObj.username==="admin"){
+                          $.get("http://localhost:8080/359project/MessagesAdmin", function(data) {
+               
+                const chatContainer = $('#chatContainer');
+                chatContainer.empty(); 
+                console.log(data);
+                if (data && data.length > 0) {
+                 
+                    data.forEach(function(message) {
+                        const messageHtml = `
+                            <div class="message">
+                                <div class="sender">${message.sender} (To: ${message.recipient})</div>
+                                <div class="timestamp">${new Date(message.date_time).toLocaleString()}</div>
+                                <div class="message-content">${message.message}</div>
+                            </div>
+                        `;
+                        chatContainer.append(messageHtml);
+                    });
+                } else {
+                    chatContainer.append("<p>No messages to display.</p>");
+                }
+            }).fail(function() {
+                alert("Error fetching messages.");
+            });
+        }
+
+        $('#sendMessageBtn').click(function() {
+            const messageContent = $('#messageContent').val().trim();
+            if (messageContent) {
+                const message = {
+                    incident_id: message.incident_id, 
+                    message: message.message,
+                    sender: message.sender, 
+                    recipient: 'admin',
+                    date_time: new Date().toISOString()
+                };
+
+                $.ajax({
+                    url: 'http://localhost:8080/359project/MessagesServlet',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(message),
+                    success: function(response) {
+                        alert('Message sent successfully!');
+                        $('#messageContent').val(''); 
+                      
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error sending message: ' + error);
+                    }
+                });
+            } else {
+                alert('Please write a message before sending.');
+            }
+        });
+        });
+        
+      
+
+     
+    
+    </script>
+</body>
+</html>

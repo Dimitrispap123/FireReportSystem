@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - View Incidents</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="style2.css" />
+</head>
+<body>
+    <div class="header" style="padding-right:100px;">
+         <button id="backbut" class="red-button" onclick="back_to_page()">Back</button>
+        <h3 style="padding-right:920px;">All Incidents</h3>
+
+   </div>
+    <div class="container">
+   
+    <table id="incidentsTable" border="1">
+        <thead>
+            <tr>
+                <th>Incident ID</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Municipality</th>
+                <th>Prefecture</th>
+                <th>Lat</th>
+                <th>Lon</th>
+                <th>Danger</th>
+                <th>Vehicles</th>
+                <th>Firemen</th>
+                <th>Final Result</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+      
+        </tbody>
+    </table>
+   
+    <button id="saveChangesBtn" class="green-button">Save Changes</button>
+    </div>
+    <script>
+        function back_to_page() {
+                window.location.href = "adminpage.html";
+        }
+        $(document).ready(function() {
+            $.get("http://localhost:8080/359project/GetIncident", function(data) {
+                if (data && data.length > 0) {
+                        data.forEach(function(incidents) {
+                        $("#incidentsTable tbody").append(`
+                            <tr data-incident-id="${incidents.incident_id}">
+                                <td>${incidents.incident_id}</td>
+                                <td contenteditable="true">${incidents.incident_type}</td>
+                                <td contenteditable="true">${incidents.description}</td>
+                                <td contenteditable="true">${incidents.status}</td>
+                                <td contenteditable="true">${incidents.start_datetime}</td>
+                                <td contenteditable="true">${incidents.end_datetime}</td>
+                                <td contenteditable="true">${incidents.municipality}</td>
+                                <td contenteditable="true">${incidents.prefecture}</td>
+                                <td contenteditable="true">${incidents.lat}</td>
+                                <td contenteditable="true">${incidents.lon}</td>
+                                <td contenteditable="true">${incidents.danger}</td>
+                                <td contenteditable="true">${incidents.vehicles}</td>
+                                <td contenteditable="true">${incidents.firemen}</td>
+                                <td contenteditable="true">${incidents.finalResult}</td>
+                            </tr>
+                        `);
+                    });
+                }
+            }).fail(function() {
+                alert("Error loading incidents.");
+            });
+           
+            $('#saveChangesBtn').click(function() {
+                var allUpdatedData = [];
+                $('#incidentsTable tbody tr').each(function() {
+                    var incidentId = $(this).data('incident-id');
+                    
+                    var updatedData = {};
+                    $(this).find('td').each(function(index, cell) {
+                        if (index > 0 && index < 13) {
+                            var columnName = getColumnNameByIndex(index);
+                            updatedData[columnName] = $(cell).text();
+                        }
+                    });
+                    allUpdatedData.push({
+                        incident_id: incidentId,
+                        updates: updatedData
+                    });
+                });
+
+                $.ajax({
+                    url: 'http://localhost:8080/359project/UpdateAllIncidents', 
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(allUpdatedData),
+                    success: function(response) {
+                        alert('All incidents updated successfully!');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error updating incidents!');
+  
+                    }
+                });
+                console.log(allUpdatedData);  
+
+            });
+        });
+
+        function getColumnNameByIndex(index) {
+            switch (index) {
+                case 1: return 'incident_type';
+                case 2: return 'description';
+                case 3: return 'status';
+                case 4: return 'start_datetime';
+                case 5: return 'end_datetime';
+                case 6: return 'municipality';
+                case 7: return 'prefecture';
+                case 8: return 'lat';
+                case 9: return 'lon';
+                case 10: return 'danger';
+                case 11: return 'vehicles';
+                case 12: return 'firemen';
+                case 13: return 'finalResult';
+                
+                default: return '';
+            }
+        }
+    </script>
+</body>
+</html>
+
+                

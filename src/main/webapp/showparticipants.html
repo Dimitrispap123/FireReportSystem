@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - View Incidents</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style2.css" />
+</head>
+<body>
+    
+    <div class="header" style="padding-right:100px;">
+         <button id="backbut" class="red-button" onclick="back_to_page()">Back</button>
+        <h3 style="padding-right:920px;">All Participants</h3>
+
+   </div>
+    <div class="container">
+    
+    <table id="participantsTable" border="1">
+        <thead>
+            <tr>
+                <th>Participant ID</th>
+                <th>Incident ID</th>
+                <th>Volunteer Username</th>
+                <th>Volunteer Type</th>
+                <th>Status</th>
+                <th>Success</th>
+                <th>Comment</th>
+  
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+    
+    <button id="saveChangesBtn" class="green-button">Save Changes</button>
+    
+    </div>
+    <script>
+        function back_to_page() {
+            window.location.href = "adminpage.html";
+        }
+        $(document).ready(function() {
+            $.get("http://localhost:8080/359project/GetParticipants", function(data) {
+                if (data && data.length > 0) { 
+                    data.forEach(function(participants) {
+                        $("#participantsTable tbody").append(`
+                            <tr data-participants-id="${participants.participant_id}">
+                                <td>${participants.participant_id}</td>
+                                <td>${participants.incident_id}</td>
+                                <td>${participants.volunteer_username}</td>
+                                <td>${participants.volunteer_type}</td>
+                                <td contenteditable="true">${participants.status}</td>
+                                <td contenteditable="true">${participants.success}</td>
+                                <td contenteditable="true">${participants.comment}</td>
+
+                            </tr>
+                        `);
+                    });
+                }else if(!data){
+                    alert("empty data");
+                }
+            }).fail(function() {
+                alert("Error loading participants.");
+            });
+
+           $('#saveChangesBtn').click(function() {
+                var allUpdatedData = [];
+                $('#participantsTable tbody tr').each(function() {
+                    var participantId = $(this).data('participants-id');
+                    var updatedData = {};
+                    $(this).find('td').each(function(index, cell) {
+                        if (index > 0 && index < 8) {
+                            var columnName = getColumnNameByIndex(index);
+                            updatedData[columnName] = $(cell).text();
+                        }
+                    });
+                    allUpdatedData.push({
+                        participant_id: participantId,
+                        updates: updatedData
+                    });
+                });
+
+                $.ajax({
+                    url: 'http://localhost:8080/359project/UpdateParticipant', 
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(allUpdatedData),
+                    success: function(response) {
+                        alert('All incidents updated successfully!');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error updating incidents!');
+  
+                    }
+                });
+                console.log(allUpdatedData);
+
+            });
+        });
+
+        function getColumnNameByIndex(index) {
+            switch (index) {
+                case 1: return 'incident_id';
+                case 2: return 'volunteer_username';
+                case 3: return 'volunteer_type';
+                case 4: return 'status';
+                case 5: return 'success';
+                case 6: return 'comment';
+                
+                default: return '';
+            }
+        }
+    </script>
+</body>
+</html>
+
+                

@@ -1,0 +1,414 @@
+
+body {
+    font-family:  sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+
+.signup-container {
+
+    background-color: white;
+    padding: 20px 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+
+.signup-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+.signup-form label {
+    font-size: 16px;
+    color: rgb(60, 69, 60);
+    margin-bottom: 5px;
+    display: block;
+}
+
+
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"],
+.signup-form input[type="date"],
+.signup-form input[type="tel"],
+.signup-form input[type="number"]{
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0 20px;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 5px;
+
+}
+
+.signup-form textarea[id="address"]{
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 20px;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+.signup-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: hsl(134, 61%, 41%);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top:10px;
+
+}
+
+
+.signup-form button:hover {
+    background-color: #166828;
+    transform: scale(1.05); 
+}
+
+.form-select{
+
+    margin: 8px 0 20px;
+}
+
+.signup-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+
+#showcheckbox1{
+    margin-bottom: 15px;
+}
+
+#showcheckbox2{
+    margin-bottom: 15px;
+}
+
+#weak-password-message {
+    color: red;
+    font-size: 0.9em;
+    margin-left: 10px;
+    visibility: hidden;
+}
+
+
+#strong-password-message {
+    color: rgb(91, 242, 91);
+    font-size: 0.9em;
+    margin-left: 10px;
+    visibility: hidden;
+}
+
+#medium-password-message {
+    color: rgb(220, 198, 51);
+    font-size: 0.9em;
+    margin-left: 5px;
+    visibility: hidden;
+}
+
+
+.styled-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    border: 1px solid #dddddd;
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+input[readonly] {
+    background-color: #e9ecef; 
+    color: #6c757d; 
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+}
+
+
+
+.red-button {
+    background-color: #dc3545; 
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin-top:10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.red-button:hover {
+    background-color: #a71d2a; 
+    transform: scale(1.05); 
+}
+
+#save-button {
+    background-color: #28a745; 
+    color: white;
+    font-size: 16px;
+    padding: 10px 30px;
+    margin-top:10px;
+    margin-left: 65px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#save-button:hover {
+    background-color: #1c7430; 
+    transform: scale(1.05); 
+}
+
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+footer ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+.danger-message {
+    background-color: #f8d7da; 
+    color: #721c24;
+    border: 1px solid #f5c6cb; 
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    max-width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+.danger-message {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+#user_info, #messages_info {
+    width: 50px; 
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    border: none;
+    border-radius: 50%; 
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    padding: 0; 
+}
+
+
+#user_info, #messages_info {
+    width: 60px; 
+    height: 60px; 
+    background-size: cover;
+    background-position: center; 
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    padding: 0; 
+}
+
+#user_info {
+    background-image: url('profile.png');
+    position: fixed; 
+    top:7px;
+    right:40px; 
+}
+
+#messages_info {
+    background-image: url('message.png');
+    position: fixed; 
+    top:7px;
+    right:150px; 
+}
+#aibut {
+    background-image: url('ai_icon.png');
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    width: 60px; 
+    height: 60px; 
+    border: none; 
+    border-radius: 50%;
+    position: fixed; 
+    top: 7px;
+    right: 250px;
+    cursor: pointer; 
+    background-color: transparent; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+
+#user_info:hover::after {
+    content: "Στοιχεία Χρήστη"; 
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    white-space: nowrap;
+    margin-top: 5px;
+}
+
+#messages_info:hover::after {
+    content: "Μηνύματα";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    white-space: nowrap;
+    margin-top: 5px;
+}
+#aibut:hover::after {
+    content: "AI Chat"; 
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    white-space: nowrap;
+    margin-top: 5px;
+}
+#user_info:hover,#aibut:hover ,#messages_info:hover {
+    transform: scale(1.1);
+    
+}
+
+#firebadge {
+
+    position: fixed; 
+    bottom: 40px;
+    left: 25px; 
+    width:100px;
+}
+ .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+        
+#guestheader{
+            padding-right: 750px;
+            }
+            
+#regheader{
+           padding-right: 685px;
+           }      
+           
+           
+#description{
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 20px;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 5px;
+    box-sizing: border-box;
+}   
